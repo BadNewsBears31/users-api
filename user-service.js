@@ -64,18 +64,28 @@ module.exports.checkUser = function (userData) {
         User.findOne({ userName: userData.userName })
             .exec()
             .then(user => {
-                bcrypt.compare(userData.password, user.password).then(res => {
-                    if (res === true) {
-                        resolve(user);
-                    } else {
-                        reject("Incorrect password for user " + userData.userName);
-                    }
-                });
-            }).catch(err => {
-                reject("Unable to find user " + userData.userName);
+                if (!user) {
+                    // Handle case where no user is found
+                    reject("Unable to find user " + userData.userName);
+                } else {
+                    // Compare hashed password
+                    bcrypt.compare(userData.password, user.password)
+                        .then(res => {
+                            if (res === true) {
+                                resolve(user);
+                            } else {
+                                reject("Incorrect password for user " + userData.userName);
+                            }
+                        })
+                        .catch(err => reject("Error comparing password: " + err));
+                }
+            })
+            .catch(err => {
+                reject("Database error while finding user: " + err);
             });
     });
 };
+
 
 module.exports.getFavourites = function (id) {
     return new Promise(function (resolve, reject) {
