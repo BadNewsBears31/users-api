@@ -27,7 +27,14 @@ app.use(passport.initialize());
 const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.json());
-app.use(cors());
+// Add this block here
+const corsOptions = {
+    origin: "*", 
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+};
+app.use(cors(corsOptions));
+//app.use(cors());
 
 // Register
 app.post("/api/user/register", (req, res) => {
