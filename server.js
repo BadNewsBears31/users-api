@@ -7,7 +7,7 @@ const userService = require("./user-service.js");
 
 const passport = require("passport");
 const passportJWT = require("passport-jwt");
-const jwt = require("jsonwebtoken");   // <-- missing before
+const jwt = require("jsonwebtoken");  
 const JwtStrategy = passportJWT.Strategy;
 const ExtractJwt = passportJWT.ExtractJwt;
 
@@ -27,7 +27,6 @@ app.use(passport.initialize());
 const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.json());
-// Add this block here
 const corsOptions = {
     origin: "*", 
     methods: ["GET", "POST", "PUT", "DELETE"],

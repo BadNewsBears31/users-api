@@ -9,7 +9,6 @@ const userSchema = new Schema({
   favourites: [String]
 });
 
-// Use a clear model name; Mongo will create a "users" collection by default
 const User = mongoose.model("User", userSchema);
 
 module.exports.connect = function () {
