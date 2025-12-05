@@ -13,12 +13,11 @@ const userSchema = new Schema({
 const User = mongoose.model("User", userSchema);
 
 module.exports.connect = function () {
-  // Optional: quick guard/log to spot undefined
   if (!process.env.MONGO_URL) {
     throw new Error("MONGO_URL is not set. Add it to .env locally and to Vercel Environment Variables.");
   }
   console.log("Connecting to MongoDB via MONGO_URL…");
-
+  
   return mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
