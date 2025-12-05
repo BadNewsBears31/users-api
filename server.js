@@ -30,14 +30,14 @@ app.use(express.json());
 app.use(cors());
 
 // Register
-app.post("/api/user/register", (req, res) => {
+app.post("/api/users/register", (req, res) => {
     userService.registerUser(req.body)
     .then(msg => res.json({ message: msg }))
     .catch(msg => res.status(422).json({ message: msg }));
 });
 
 // Login
-app.post("/api/user/login", (req, res) => {
+app.post("/api/users/login", (req, res) => {
     userService.checkUser(req.body)
     .then(user => {
         const payload = { _id: user._id, userName: user.userName };
@@ -48,7 +48,7 @@ app.post("/api/user/login", (req, res) => {
 });
 
 // Protected routes
-app.get("/api/user/favourites",
+app.get("/api/users/favourites",
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
         userService.getFavourites(req.user._id)
@@ -57,7 +57,7 @@ app.get("/api/user/favourites",
     }
 );
 
-app.put("/api/user/favourites/:id",
+app.put("/api/users/favourites/:id",
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
         userService.addFavourite(req.user._id, req.params.id)
@@ -66,7 +66,7 @@ app.put("/api/user/favourites/:id",
     }
 );
 
-app.delete("/api/user/favourites/:id",
+app.delete("/api/users/favourites/:id",
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
         userService.removeFavourite(req.user._id, req.params.id)
