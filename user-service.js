@@ -17,19 +17,13 @@ let userSchema = new Schema({
 const User = mongoose.model("User", userSchema);
 
 module.exports.connect = function () {
-    return new Promise(function (resolve, reject) {
-        let db = mongoose.createConnection(mongoDBConnectionString);
-
-        db.on('error', err => {
-            reject(err);
-        });
-
-        db.once('open', () => {
-            User = db.model("users", userSchema);
-            resolve();
-        });
+    return mongoose.connect(process.env.MONGODB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
     });
 };
+  
+  module.exports.User = User;
 
 module.exports.registerUser = function (userData) {
     return new Promise((resolve, reject) => {
